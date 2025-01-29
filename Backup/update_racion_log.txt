@@ -1,0 +1,22 @@
+Received data: {"id":1,"racion_nombre":"Purolomo","racion_peso":5.36,"racion_costo":0.3,"racion_fecha":"2024-12-12"}
+Decoded data: Array
+(
+    [id] => 1
+    [racion_nombre] => Purolomo
+    [racion_peso] => 5.36
+    [racion_costo] => 0.3
+    [racion_fecha] => 2024-12-12
+)
+
+Ración actualizada exitosamente para ID 1.
+Received data: {"id":1,"racion_nombre":"Purina","racion_peso":4.01,"racion_costo":0.25,"racion_fecha":"2024-12-01"}
+Decoded data: Array
+(
+    [id] => 1
+    [racion_nombre] => Purina
+    [racion_peso] => 4.01
+    [racion_costo] => 0.25
+    [racion_fecha] => 2024-12-01
+)
+
+Ración actualizada exitosamente para ID 1.

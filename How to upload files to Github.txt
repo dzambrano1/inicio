@@ -1,0 +1,96 @@
+
+Here's a step-by-step guide to upload files to a GitHub repository:
+
+
+1. **Create a new repository on GitHub**
+
+   - Go to GitHub.com and log in
+
+   - Click the "+" in the top right corner
+
+   - Select "New repository"
+
+   - Name your repository
+
+   - Choose public/private
+
+   - Click "Create repository"
+
+2. **Initialize Git locally** (if not done)
+   ```bash
+   # Navigate to your project folder
+   cd path/to/your/project
+
+   # Initialize git
+   git init
+   ```
+
+3. **Configure Git** (if first time)
+   ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "your@email.com"
+   ```
+
+5. **Prepare files for upload**
+   ```bash
+   # Check status of your files
+   git status
+
+   # Add all files
+   git add .
+
+   # Or add specific files
+   git add filename.ext
+   ```
+
+6. **Commit your files**
+   git commit -m "Initial commit" 
+
+
+7. **Push to GitHub**
+   # First time push
+   git push -u origin main
+
+   # Subsequent pushes
+   git push
+
+
+8. **If you get an error about main/master**
+   ```bash
+   # Check your branch name
+   git branch
+
+   # If you're on master and need main
+   git branch -M main
+   ```
+
+9. **Common troubleshooting**
+   ```bash
+   # If push is rejected
+   git pull origin main
+   
+   # Then try push again
+   git push origin main
+   ```
+
+10. **Verify upload**
+
+    - Go to your GitHub repository in browser
+
+    - Refresh the page
+
+    - Your files should be visible
+
+
+**Additional Tips:**
+
+
+- Create a `.gitignore` file for files you don't want to upload
+
+- Always pull before pushing if working with others
+
+- Use meaningful commit messages
+
+- Check `git status` frequently
+
+
