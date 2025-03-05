@@ -56,8 +56,8 @@
           <div class="img-center pt-3">
           </div>
           <div class="logo-img-center pt-3 d-flex justify-content-center">
-            <a href="http://localhost:3000/vacuno/inventario_vacuno.php">
-              <img src="http://ganagram.com/wp-content/uploads/2024/04/Ganagram_New_Logo-removebg-preview.png" width="50%" height="50px" alt="Ganagram Logo">
+            <a href="./vacuno/inventario_vacuno.php">
+              <img src="./vacuno/images/Ganagram_logo.png" width="50%" height="50px" alt="Ganagram Logo">
             </a>
           </div>
           <h6>Unidad Produccion Vacuna #: 01012025-3526</h6>
@@ -73,8 +73,8 @@
           <div class="img-center pt-3">
           </div>
           <div class="logo-img-center pt-3 d-flex justify-content-center">
-            <a href="http://localhost:3000/bufalino/inventario_bufalino.php">
-              <img src="http://ganagram.com/wp-content/uploads/2024/04/Bufagram_New_Logo-removebg-preview.png" width="50%" height="50px" alt="Bufagram Logo">
+            <a href="./bufalino/inventario_bufalino.php">
+              <img src="./bufalino/images/Bufagram_logo.png" width="50%" height="50px" alt="Bufagram Logo">
             </a>
           </div>
           <h6>Unidad Produccion Bufalina #: 01012025-3527</h6>
@@ -90,8 +90,8 @@
           <div class="img-center pt-3">
           </div>
           <div class="logo-img-center pt-3 d-flex justify-content-center">
-            <a href="http://localhost:3000/porcino/inventario_porcino.php">
-              <img src="http://ganagram.com/wp-content/uploads/2024/04/Logo_Porkygram_Solido-removebg-preview.png" width="50%" height="50px" alt="Porcigram Logo">
+            <a href="./porcino/inventario_porcino.php">
+              <img src="./porcino/images/Porcigram_logo.png" width="50%" height="50px" alt="Porcigram Logo">
             </a>
           </div>
           <h6>Unidad Produccion Porcina #: 01012025-3528</h6>
@@ -107,8 +107,8 @@
           <div class="img-center pt-3">
           </div>
           <div class="logo-img-center pt-3 d-flex justify-content-center">
-            <a href="http://localhost:3000/aviar/inventario_aviar.php">
-              <img src="http://ganagram.com/wp-content/uploads/2024/04/Avegram_new_Logo_final-removebg-preview.png" width="50%" height="50px" alt="Avegram Logo">
+            <a href="./aviar/inventario_aviar.php">
+              <img src="./aviar/images/Avegram_Logo.png" width="50%" height="50px" alt="Avegram Logo">
             </a>
           </div>
           <h6>Unidad Produccion Aviar #: 01012025-3529</h6>
