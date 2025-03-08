@@ -15,7 +15,7 @@ if (!$conn) {
 // Check if user is admin
 $is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
-// Get orders with payment status - all orders for admin, only customer's orders for regular users
+// Get orders with payment status - all orders for admin, only customer's orders for regular users 
 if ($is_admin) {
     // Admin sees all customer orders
     $stmt = $conn->prepare("

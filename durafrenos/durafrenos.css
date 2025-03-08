@@ -6,6 +6,7 @@
     --tertiary-color: #FFD43B;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-size: 12px;
+    --quinary-color: #1536a4;
 }
 .action-btn{
     border: none;

@@ -14,6 +14,6 @@ if (isset($_SESSION['test_value'])) {
     echo '<p style="color:red">Session is NOT working correctly! Test value is missing.</p>';
 }
 
-// Add a link to go back
+// Add a link to go back 
 echo '<p><a href="test_session.php">Go back to test page</a></p>';
 ?>

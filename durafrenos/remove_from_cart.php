@@ -22,7 +22,7 @@ if (!isset($_SESSION['cart'][$index])) {
     exit;
 }
 
-// Remove item from cart
+// Remove item from cart 
 unset($_SESSION['cart'][$index]);
 $_SESSION['cart'] = array_values($_SESSION['cart']); // Reindex array
 

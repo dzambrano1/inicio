@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullName = $_POST["fullName"] ?? "";
     $email = $_POST["email"] ?? "";
     
-    // Validate input
+    // Validate input 
     if (empty($username) || empty($password) || empty($fullName) || empty($email)) {
         $error = "All fields are required.";
     } else {

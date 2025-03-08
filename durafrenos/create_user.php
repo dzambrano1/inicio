@@ -7,7 +7,7 @@ session_start();
 // Include database connection
 require_once "./conexion.php";
 
-// Initialize variables
+// Initialize variables 
 $form_username = $firstName = $lastName = $company = $mobile = $address = $email = $form_password = $role = "";
 $error = $success = "";
 

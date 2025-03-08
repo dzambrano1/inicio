@@ -2,7 +2,7 @@
 require_once './auth.php';
 requireLogin();
 
-// Check if user is admin
+// Check if user is admin 
 if ($_SESSION['role'] !== 'admin') {
     header('Location: catalog.php');
     exit;

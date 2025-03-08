@@ -2,7 +2,7 @@
 require_once './auth.php';
 requireLogin();
 
-// Check if user is admin
+// Check if user is admin 
 if ($_SESSION['role'] !== 'admin') {
     header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'No tienes permisos para realizar esta acción']);

@@ -1,5 +1,5 @@
 <?php
-require_once './conexion.php'; // Database connection
+require_once './conexion.php'; // Database connection 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Validate the product ID

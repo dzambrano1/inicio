@@ -69,7 +69,7 @@ function checkPageAccess($page) {
         return false;
     }
     
-    // Default deny access for unknown pages
+    // Default deny access for unknown pages 
     return false;
 }
 

@@ -1,6 +1,6 @@
 <?php
 require_once './auth.php';
-requireAdmin(); // This will redirect non-admin users
+requireAdmin(); // This will redirect non-admin users 
 
 require_once './conexion.php';
 

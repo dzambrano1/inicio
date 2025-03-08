@@ -20,7 +20,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Check if user is admin
 $is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
-// Now load database connection since auth is handled
+// Now load database connection since auth is handled 
 require_once './conexion.php';
 
 // Debug: log received POST data to a file

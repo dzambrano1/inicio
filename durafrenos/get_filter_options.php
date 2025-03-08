@@ -1,5 +1,5 @@
 <?php
-// Include database connection
+// Include database connection 
 require_once './conexion.php';
 
 // Set header to return JSON

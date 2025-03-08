@@ -4,7 +4,7 @@ session_start();
 
 
 
-// Get user role with the CORRECT session variable names
+// Get user role with the CORRECT session variable names 
 $user_role = $_SESSION["role"] ?? "customer";
 $user_id = $_SESSION["id"] ?? 0;
 $user_name = $_SESSION["name"] ?? "Usuario";

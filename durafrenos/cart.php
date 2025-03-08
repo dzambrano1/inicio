@@ -8,7 +8,7 @@ $conn = new PDO("mysql:host=localhost;dbname=durafrenos", "root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $conn->exec("SET NAMES utf8");
 
-// Get user information
+// Get user information 
 $user_id = $_SESSION['customer_id'];
 $user_name = $_SESSION['fullName'];
 $user_role = $_SESSION['role'];

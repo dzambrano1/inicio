@@ -23,7 +23,7 @@ if (!isset($_SESSION['cart'][$index])) {
     exit;
 }
 
-// Validate quantity
+// Validate quantity 
 if ($quantity < 1) {
     echo json_encode([
         'success' => false,

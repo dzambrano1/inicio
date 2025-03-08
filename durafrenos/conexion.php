@@ -1,6 +1,6 @@
 <?php
 
-// Check if this is an AJAX request
+// Check if this is an AJAX request 
 $is_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') 
            || strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false 
            || strpos($_SERVER['SCRIPT_NAME'], 'process_payments.php') !== false;

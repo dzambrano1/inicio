@@ -2,7 +2,7 @@
 session_start();
 require_once './conexion.php';
 
-// Function to sanitize input
+// Function to sanitize input 
 function sanitize_input($data) {
     $data = trim($data);
     $data = stripslashes($data);

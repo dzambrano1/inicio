@@ -30,7 +30,7 @@ try {
                                WHERE o.order_id = ?");
         $stmt->execute([$order_id]);
     } else {
-        // Regular users can only view their own orders
+        // Regular users can only view their own orders 
         $stmt = $conn->prepare("SELECT o.* 
                                FROM orders o 
                                WHERE o.order_id = ? AND o.customer_id = ?");

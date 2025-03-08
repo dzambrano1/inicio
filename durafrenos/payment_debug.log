@@ -1,8 +1,0 @@
-POST data received: Array
-(
-    [order_id] => 5
-    [payment_method] => cash
-    [reference_number] => 
-    [notes] => OK
-)
-

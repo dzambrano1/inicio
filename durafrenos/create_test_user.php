@@ -10,7 +10,7 @@ echo "Database: " . $dbname . "<br>";
 echo "Username: " . $username . "<br>";
 
 try {
-    // Create connection
+    // Create connection 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     // Check connection

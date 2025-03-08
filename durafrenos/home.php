@@ -1,6 +1,6 @@
 <?php
 require_once './auth.php';
-requireLogin(); // This will redirect to login.php if not logged in
+requireLogin(); // This will redirect to login.php if not logged in 
 
 require_once './conexion.php';
 

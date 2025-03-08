@@ -18,7 +18,7 @@ if (!$conn) {
 $order_id = $_POST['order_id'];
 $customer_id = $_SESSION['customer_id'];
 
-// Verify order belongs to customer
+// Verify order belongs to customer 
 $stmt = $conn->prepare("SELECT o.*, 
                        COALESCE(SUM(p.amount), 0) as paid_amount,
                        o.total - COALESCE(SUM(p.amount), 0) as pending_amount

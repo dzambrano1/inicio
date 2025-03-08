@@ -32,7 +32,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->exec("SET NAMES utf8");
 
-    // Start transaction
+    // Start transaction 
     $conn->beginTransaction();
 
     // Generate order ID
