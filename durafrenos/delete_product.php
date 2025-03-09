@@ -1,16 +1,18 @@
 <?php
-require_once './auth.php';
-requireLogin();
+// Start session for authentication
+session_start();
 
-// Check if user is admin 
-if ($_SESSION['role'] !== 'admin') {
+// Check if user is logged in and is admin
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== 1 || $_SESSION['role'] !== 'admin') {
     header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'No tienes permisos para realizar esta acción']);
     exit;
 }
 
+// Include database connection
 require_once './conexion.php';
 
+// Connect to database
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 if (!$conn) {
     header('Content-Type: application/json');
@@ -18,8 +20,8 @@ if (!$conn) {
     exit;
 }
 
-// Get product ID
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Get product ID from POST or GET
+$id = isset($_POST['id']) ? intval($_POST['id']) : (isset($_GET['id']) ? intval($_GET['id']) : 0);
 
 if ($id <= 0) {
     header('Content-Type: application/json');

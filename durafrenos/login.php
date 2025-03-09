@@ -2,11 +2,6 @@
 // Start the session 
 session_start();
 
-// Check if already logged in, redirect to appropriate page
-if (isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === 1) {
-    header("location: index.php");
-    exit;
-}
 
 // Include database connection
 require_once "./conexion.php";
@@ -81,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             if ($role === "admin") {
                                 header("location: catalog.php");
                             } else {
-                                header("location: index.php");
+                                header("location: catalog.php");
                             }
                             exit;
                         } else {

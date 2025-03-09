@@ -173,10 +173,9 @@ $orders = $stmt->get_result();
     <header>
         <nav class="container navbar">
             <div class="nav-item text-center">
-                <a href="./home.php" title="Inicio" style="color: white;">
-                    <i class="fa-solid fa-home fa-2xl"></i>
-                    <div class="nav-label text-center">Inicio</div>
-                </a>
+            <a class="navbar-brand" href="catalog.php">
+                <img src="/images/durafrenos-logo-removebg-preview.png" alt="Durafrenos" style="height: 80px;">
+            </a>
             </div>
 
         </nav>

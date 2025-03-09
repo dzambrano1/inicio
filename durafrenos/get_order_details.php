@@ -1,178 +1,118 @@
 <?php
+// Start session
 session_start();
-require_once './conexion.php';
 
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    die('Unauthorized');
+// Set header for JSON response
+header('Content-Type: application/json');
+
+// Check if user is logged in
+if (!isset($_SESSION["id"])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Usuario no ha iniciado sesión'
+    ]);
+    exit;
 }
 
-if (!isset($_POST['order_id'])) {
-    die('Order ID is required');
+$user_id = $_SESSION["id"];
+$user_role = $_SESSION["role"] ?? "customer";
+
+// Check if order ID is provided
+if (!isset($_GET['order_id']) || empty($_GET['order_id'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'ID de pedido no proporcionado'
+    ]);
+    exit;
+}
+
+$order_id = intval($_GET['order_id']);
+
+// Include database connection
+require_once "./conexion.php";
+
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+if (!$conn) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Error de conexión a la base de datos: ' . mysqli_connect_error()
+    ]);
+    exit;
 }
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=durafrenos", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $conn->exec("SET NAMES utf8");
-
-    $order_id = $_POST['order_id'];
-    $customer_id = $_SESSION['customer_id'];
-    $is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
-
-    // Debug output
-    error_log("Searching for order: " . $order_id . " for customer: " . $customer_id . ", is_admin: " . ($is_admin ? 'yes' : 'no'));
-
-    // For admin users, allow access to any order
-    if ($is_admin) {
-        $stmt = $conn->prepare("SELECT o.*, c.fullName as customer_name, c.email as customer_email 
-                               FROM orders o 
-                               LEFT JOIN customers c ON o.customer_id = c.customer_id
-                               WHERE o.order_id = ?");
-        $stmt->execute([$order_id]);
-    } else {
-        // Regular users can only view their own orders 
-        $stmt = $conn->prepare("SELECT o.* 
-                               FROM orders o 
-                               WHERE o.order_id = ? AND o.customer_id = ?");
-        $stmt->execute([$order_id, $customer_id]);
+    // First verify the order belongs to this user (unless admin)
+    if ($user_role !== "admin") {
+        $check_query = "SELECT id FROM orders WHERE id = ? AND customer_id = ?";
+        $stmt = $conn->prepare($check_query);
+        $stmt->bind_param("ii", $order_id, $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        
+        if ($result->num_rows === 0) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Pedido no encontrado o no autorizado'
+            ]);
+            exit;
+        }
     }
     
-    $order = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($order) {
-        error_log("Order found: " . print_r($order, true));
-        
-        // Get order details with product information
-        $stmt = $conn->prepare("
-            SELECT od.*, p.code, p.make, p.model, p.year, p.category, p.price as product_price
-            FROM order_details od
-            JOIN products p ON od.code = p.code
-            WHERE od.order_id = ?
-        ");
-        $stmt->execute([$order_id]);
-        $details = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        error_log("Number of details found: " . count($details));
-        
-        if (empty($details)) {
-            echo "<div class='alert alert-warning'>";
-            echo "Debug Info:<br>";
-            echo "Order ID: " . htmlspecialchars($order_id) . "<br>";
-            if ($is_admin) {
-                echo "Admin viewing order<br>";
-            } else {
-                echo "Customer ID: " . htmlspecialchars($customer_id) . "<br>";
-            }
-            echo "Order exists but no details found.";
-            echo "</div>";
-            
-            // Debug query
-            $debug_stmt = $conn->prepare("SELECT * FROM order_details WHERE order_id = ?");
-            $debug_stmt->execute([$order_id]);
-            $debug_result = $debug_stmt->fetchAll(PDO::FETCH_ASSOC);
-            error_log("Direct order_details query result count: " . count($debug_result));
-            error_log("Direct order_details query result: " . print_r($debug_result, true));
-        }
-
-        // Order header information
-        echo "<div class='card mb-3'>";
-        echo "<div class='card-header bg-primary text-white'>";
-        echo "<h5 class='mb-0'>Order Information</h5>";
-        echo "</div>";
-        echo "<div class='card-body'>";
-        echo "<div class='row'>";
-        echo "<div class='col-md-6'>";
-        echo "<p><strong>Order Number:</strong> " . htmlspecialchars($order['order_id']) . "</p>";
-        
-        // Show customer information for admin users
-        if ($is_admin) {
-            echo "<p><strong>Customer:</strong> " . htmlspecialchars($order['customer_name']) . "</p>";
-            echo "<p><strong>Email:</strong> " . htmlspecialchars($order['customer_email']) . "</p>";
-        }
-        
-        echo "<p><strong>Customer ID:</strong> " . htmlspecialchars($order['customer_id']) . "</p>";
-        echo "</div>";
-        echo "<div class='col-md-6'>";
-        echo "<p><strong>Date:</strong> " . date('d/m/Y H:i', strtotime($order['order_date'])) . "</p>";
-        echo "<p><strong>Status:</strong> ";
-        
-        // Status badge
-        switch($order['status']) {
-            case 'pending':
-                echo "<span class='badge bg-warning'><i class='fas fa-clock me-1'></i>Pending</span>";
-                break;
-            case 'processing':
-                echo "<span class='badge bg-info'><i class='fas fa-cog me-1'></i>Processing</span>";
-                break;
-            case 'completed':
-                echo "<span class='badge bg-success'><i class='fas fa-check me-1'></i>Completed</span>";
-                break;
-            case 'cancelled':
-                echo "<span class='badge bg-danger'><i class='fas fa-times me-1'></i>Cancelled</span>";
-                break;
-            default:
-                echo "<span class='badge bg-secondary'>" . htmlspecialchars($order['status']) . "</span>";
-        }
-        echo "</p>";
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-
-        // Order details table
-        echo "<div class='table-responsive'>";
-        echo "<table class='table table-striped table-bordered'>";
-        echo "<thead class='table-light'>";
-        echo "<tr>";
-        echo "<th>Code</th>";
-        echo "<th>Make</th>";
-        echo "<th>Model</th>";
-        echo "<th>Year</th>";
-        echo "<th>Category</th>";
-        echo "<th class='text-center'>Quantity</th>";
-        echo "<th class='text-end'>Price</th>";
-        echo "<th class='text-end'>Subtotal</th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
-        
-        foreach ($details as $detail) {
-            $subtotal = $detail['quantity'] * $detail['price'];
-            echo "<tr>";
-            echo "<td class='text-center'>" . htmlspecialchars($detail['code']) . "</td>";
-            echo "<td class='text-center'>" . htmlspecialchars($detail['make']) . "</td>";
-            echo "<td class='text-center'>" . htmlspecialchars($detail['model']) . "</td>";
-            echo "<td class='text-center'>" . htmlspecialchars($detail['year']) . "</td>";
-            echo "<td class='text-center'>" . htmlspecialchars($detail['category']) . "</td>";
-            echo "<td class='text-center'>" . htmlspecialchars($detail['quantity']) . "</td>";
-            echo "<td class='text-center'>$" . number_format($detail['price'], 2) . "</td>";
-            echo "<td class='text-center'>$" . number_format($subtotal, 2) . "</td>";
-            echo "</tr>";
-        }
-        
-        echo "</tbody>";
-        echo "<tfoot class='table-light'>";
-        echo "<tr>";
-        echo "<td colspan='6' class='text-end'><strong>Total:</strong></td>";
-        echo "<td class='text-end'><strong>$" . number_format($order['total'], 2) . "</strong></td>";
-        echo "</tr>";
-        echo "</tfoot>";
-        echo "</table>";
-        echo "</div>";
-
-        // Additional information or notes
-        if (!empty($order['notes'])) {
-            echo "<div class='mt-3'>";
-            echo "<h6>Notes:</h6>";
-            echo "<p>" . nl2br(htmlspecialchars($order['notes'])) . "</p>";
-            echo "</div>";
-        }
-    } else {
-        error_log("No order found for ID: " . $order_id . " and customer: " . $customer_id);
-        echo "<div class='alert alert-danger'>No order found for ID: " . $order_id . " and customer: " . $customer_id . "</div>";
+    // Get order information
+    $order_query = "SELECT id, customer_id, order_date, total FROM orders WHERE id = ?";
+    $stmt = $conn->prepare($order_query);
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $order = $result->fetch_assoc();
+    $stmt->close();
+    
+    if (!$order) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Pedido no encontrado'
+        ]);
+        exit;
     }
-} catch (PDOException $e) {
-    error_log("Database Error: " . $e->getMessage());
-    echo "<div class='alert alert-danger'>Error getting order details.</div>";
+    
+    // Format order data
+    $order_data = [
+        'id' => $order['id'],
+        'customer_id' => $order['customer_id'],
+        'date' => date('d/m/Y H:i', strtotime($order['order_date'])),
+        'total' => $order['total']
+    ];
+    
+    // Get order details
+    $details_query = "SELECT id, product_id, quantity, code, make, model, year, price, image 
+                     FROM order_details 
+                     WHERE order_id = ?";
+    $stmt = $conn->prepare($details_query);
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    
+    $details = [];
+    while ($row = $result->fetch_assoc()) {
+        $details[] = $row;
+    }
+    
+    // Return response
+    echo json_encode([
+        'success' => true,
+        'order' => $order_data,
+        'details' => $details
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
+} finally {
+    mysqli_close($conn);
 }
-?> 
+?>

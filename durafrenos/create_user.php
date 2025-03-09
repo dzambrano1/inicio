@@ -200,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Navigation header -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="home.php">
                 Durafrenos
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -210,7 +210,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Inicio</a>
+                    <a class="navbar-brand" href="catalog.php">
+                        <img src="/images/durafrenos-logo-removebg-preview.png" alt="Durafrenos" style="height: 80px;">
+                    </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="catalog.php">Catálogo</a>
